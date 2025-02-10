@@ -1,220 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Foodie Love Surprise</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #ffe0e0, #ffb2b2);
-            margin: 0;
-            overflow: hidden;
-            font-family: 'Comic Sans MS', cursive;
-        }
-        #container {
-            position: relative;
-            perspective: 1000px;
-        }
-        #food-cursor {
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            font-size: 32px;
-            transition: transform 0.3s ease;
-            animation: float 2s ease-in-out infinite;
-        }
-        #panda {
-            position: relative;
-            cursor: none;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        #message {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            background: rgba(255,255,255,0.95);
-            padding: 25px 35px;
-            border-radius: 20px;
-            text-align: center;
-            max-width: 350px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        .floating-food {
-            position: absolute;
-            font-size: 28px;
-            opacity: 0.9;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-            animation: food-float 4s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(10deg); }
-        }
-        @keyframes food-float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-40px) rotate(15deg); }
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg) scale(1); }
-            100% { transform: rotate(360deg) scale(1.2); }
-        }
-        #close-message {
-            margin-top: 15px;
-            padding: 8px 20px;
-            border: none;
-            background: #ff6b6b;
-            color: white;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        #close-message:hover {
-            transform: scale(1.1);
-            background: #ff5252;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Panda day</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Arial', sans-serif;
+      cursor: none;
+    }
+    #container {
+      position: relative;
+      perspective: 1000px;
+    }
+    /* Custom cursor updated to display food emojis */
+    #custom-cursor {
+      position: fixed;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      font-size: 24px;
+      /* No background or border-radius needed now */
+    }
+    #panda {
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    #panda:hover {
+      transform: scale(1.05) rotate3d(1, 1, 0, 10deg);
+    }
+    #panda-elements {
+      transition: transform 0.2s ease;
+    }
+    #message {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      max-width: 300px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    .floating-element {
+      position: absolute;
+      opacity: 0.7;
+      transition: all 0.5s ease;
+      user-select: none;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
-    <div id="food-cursor">🍕</div>
-    <div id="container">
-        <svg id="panda" width="400" height="400" viewBox="0 0 200 200">
-            <!-- Same panda SVG content as before -->
-        </svg>
-        <div id="message">
-            <h2>You're My Favorite Slice! 🍕</h2>
-            <p>My love for you grows like dough in the oven! ❤️</p>
-            <button id="close-message">Yummy!</button>
-        </div>
+  <div id="custom-cursor"></div>
+  <div id="container">
+    <svg id="panda" width="400" height="400" viewBox="0 0 200 200">
+      <g id="panda-elements">
+        <circle cx="100" cy="120" r="80" fill="white"/>
+        
+        <!-- Black Patches -->
+        <circle cx="60" cy="80" r="25" fill="black"/>
+        <circle cx="140" cy="80" r="25" fill="black"/>
+        
+        <!-- Ears -->
+        <g id="panda-ears">
+          <ellipse cx="50" cy="40" rx="20" ry="15" fill="black"/>
+          <ellipse cx="150" cy="40" rx="20" ry="15" fill="black"/>
+        </g>
+        
+        <!-- Eyes -->
+        <g id="panda-eyes">
+          <circle cx="65" cy="80" r="10" fill="white"/>
+          <circle cx="135" cy="80" r="10" fill="white"/>
+          <circle cx="65" cy="80" r="5" fill="black"/>
+          <circle cx="135" cy="80" r="5" fill="black"/>
+        </g>
+        
+        <!-- Mouth -->
+        <g id="panda-mouth">
+          <path d="M80,130 Q100,140 120,130" stroke="black" stroke-width="2" fill="none"/>
+        </g>
+      </g>
+    </svg>
+    <div id="message">
+      <h2>I Love You!</h2>
+      <p>You're my favorite panda in the whole world ❤️</p>
+      <button id="close-message">Close</button>
     </div>
+  </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script>
-        const foods = ['🍕', '🍔', '🌮', '🍟', '🍩', '🍣', '🥨', '🍦'];
-        const cursor = document.getElementById('food-cursor');
-        const panda = document.getElementById('panda');
-        const message = document.getElementById('message');
+  <script>
+    const container = document.getElementById('container');
+    const panda = document.getElementById('panda');
+    const pandaElements = document.getElementById('panda-elements');
+    const pandaEyes = document.getElementById('panda-eyes');
+    const pandaEars = document.getElementById('panda-ears');
+    const pandaMouth = document.getElementById('panda-mouth');
+    const message = document.getElementById('message');
+    const closeMessageBtn = document.getElementById('close-message');
+    const customCursor = document.getElementById('custom-cursor');
 
-        // Animated food cursor
-        let foodIndex = 0;
-        function updateCursor() {
-            gsap.to(cursor, {
-                duration: 0.5,
-                scale: 1.2,
-                rotation: 360,
-                onComplete: () => {
-                    cursor.textContent = foods[foodIndex];
-                    gsap.to(cursor, { 
-                        duration: 0.5, 
-                        scale: 1, 
-                        rotation: 0 
-                    });
-                }
-            });
-            foodIndex = (foodIndex + 1) % foods.length;
-        }
-        setInterval(updateCursor, 10000);
+    // Floating background elements remain unchanged
+    function createFloatingElements() {
+      const elementTypes = ['❤️'];
+      for (let i = 0; i < 10; i++) {
+        const element = document.createElement('div');
+        element.classList.add('floating-element');
+        element.innerText = elementTypes[Math.floor(Math.random() * elementTypes.length)];
+        element.style.left = `${Math.random() * window.innerWidth}px`;
+        element.style.top = `${Math.random() * window.innerHeight}px`;
+        element.style.fontSize = `${20 + Math.random() * 30}px`;
+        element.style.animation = `float 3s infinite, spin ${2 + Math.random() * 3}s linear infinite`;
+        container.appendChild(element);
 
-        // Floating food elements
-        function createFloatingFood() {
-            for (let i = 0; i < 15; i++) {
-                const food = document.createElement('div');
-                food.className = 'floating-food';
-                food.textContent = foods[Math.floor(Math.random() * foods.length)];
-                food.style.left = `${Math.random() * 100}vw`;
-                food.style.top = `${Math.random() * 100}vh`;
-                food.style.animationDelay = `${Math.random() * 2}s`;
-                document.body.appendChild(food);
+        // Periodic movement
+        setInterval(() => {
+          element.style.left = `${Math.random() * window.innerWidth}px`;
+          element.style.top = `${Math.random() * window.innerHeight}px`;
+        }, 5000);
+      }
+    }
+    createFloatingElements();
 
-                gsap.to(food, {
-                    duration: 10 + Math.random() * 10,
-                    x: Math.random() * 200 - 100,
-                    y: Math.random() * 200 - 100,
-                    repeat: -1,
-                    ease: "power1.inOut"
-                });
-            }
-        }
-        createFloatingFood();
+    // Custom cursor movement and food emoji cycling
+    document.addEventListener('mousemove', (e) => {
+      // Update custom cursor position
+      customCursor.style.left = `${e.clientX}px`;
+      customCursor.style.top = `${e.clientY}px`;
 
-        // Enhanced mouse following
-        document.addEventListener('mousemove', (e) => {
-            gsap.to(cursor, {
-                duration: 0.3,
-                x: e.clientX + 10,
-                y: e.clientY + 10
-            });
+      // Panda interaction (eye, ear, and mouth movements)
+      const rect = panda.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+      const maxOffset = 5;
+      const offsetX = Math.cos(angle) * maxOffset;
+      const offsetY = Math.sin(angle) * maxOffset;
+      
+      // Eyes movement
+      pandaEyes.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+      
+      // Ears rotation
+      const earRotation = offsetX * 0.5;
+      pandaEars.style.transform = `rotate(${earRotation}deg)`;
+      
+      // Mouth movement
+      const mouthOffset = Math.abs(offsetY);
+      pandaMouth.style.transform = `translateY(${mouthOffset}px) scaleY(${1 + mouthOffset / 20})`;
+    });
 
-            // Panda animation
-            const rect = panda.getBoundingClientRect();
-            const centerX = rect.left + rect.width/2;
-            const centerY = rect.top + rect.height/2;
-            
-            gsap.to(panda, {
-                duration: 0.5,
-                rotationX: (e.clientY - centerY) * 0.05,
-                rotationY: (e.clientX - centerX) * 0.05,
-                scale: 1.05
-            });
-        });
+    // Click interactions (particle effect removed)
+    panda.addEventListener('click', function(event) {
+      const rect = panda.getBoundingClientRect();
+      // Message reveal when clicked on a specific area of the panda
+      const clickY = event.clientY - rect.top;
+      if (clickY > rect.height * 0.5 && clickY < rect.height * 0.8) {
+        message.style.display = 'block';
+        message.style.transform = 'translate(-50%, -50%) scale(1)';
+        message.style.opacity = '1';
+      }
+    });
 
-        // Click animation
-        panda.addEventListener('click', (e) => {
-            gsap.to(panda, {
-                duration: 0.3,
-                scale: 0.9,
-                yoyo: true,
-                repeat: 1,
-                ease: "elastic.out(1, 0.3)"
-            });
+    // Close message button functionality
+    closeMessageBtn.addEventListener('click', () => {
+      message.style.transform = 'translate(-50%, -50%) scale(0)';
+      message.style.opacity = '0';
+      setTimeout(() => {
+        message.style.display = 'none';
+      }, 500);
+    });
 
-            gsap.fromTo(message,
-                { scale: 0, opacity: 0 },
-                { 
-                    duration: 0.7,
-                    scale: 1,
-                    opacity: 1,
-                    ease: "back.out(1.7)",
-                    onStart: () => message.style.display = 'block'
-                }
-            );
-        });
+    // Custom cursor food emoji cycling every 10 seconds
+    const foodEmojis = ['🍕', '🍔', '🍟', '🌭', '🍣', '🍦', '🍩'];
+    let currentFoodIndex = 0;
+    customCursor.innerText = foodEmojis[currentFoodIndex];
 
-        // Close message
-        document.getElementById('close-message').addEventListener('click', () => {
-            gsap.to(message, {
-                duration: 0.5,
-                scale: 0,
-                opacity: 0,
-                ease: "back.in(1.7)",
-                onComplete: () => message.style.display = 'none'
-            });
-        });
-
-        // Panda hover effect
-        panda.addEventListener('mouseenter', () => {
-            gsap.to(panda, {
-                duration: 0.5,
-                scale: 1.1,
-                rotation: '2deg',
-                ease: "elastic.out(1, 0.3)"
-            });
-        });
-
-        panda.addEventListener('mouseleave', () => {
-            gsap.to(panda, {
-                duration: 0.5,
-                scale: 1,
-                rotation: 0,
-                ease: "elastic.out(1, 0.3)"
-            });
-        });
-    </script>
+    setInterval(() => {
+      currentFoodIndex = (currentFoodIndex + 1) % foodEmojis.length;
+      customCursor.innerText = foodEmojis[currentFoodIndex];
+    }, 10000);
+  </script>
 </body>
 </html>
